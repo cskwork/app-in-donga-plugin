@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>도구 이름</title>
+<style>
+  /* 앱 인 동아 시작 템플릿
+     - 색·크기는 아래 변수만 바꿔서 꾸며요.
+     - 화면은 세 장: 시작(#start) → 놀이(#play) → 결과(#result).
+     - 인터넷·저장·알림 창 없이 이 파일 하나로 동작해요. */
+  :root {
+    --bg: #f6f4ee;
+    --surface: #ffffff;
+    --ink: #1c1c1e;
+    --muted: #4f4b45;
+    --line: #e2dccf;
+    --brand: #2459c4;
+    --brand-ink: #ffffff;
+    --good: #18794e;
+    --bad: #b4361a;
+    --radius: 22px;
+    --gap: clamp(12px, 2.2vw, 28px);
+    --font: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", system-ui, sans-serif;
+    --text: clamp(18px, 1.1vw + 12px, 28px);   /* 본문: 18px 이상 */
+    --big: clamp(28px, 3.4vw + 12px, 76px);    /* 놀이 중 가장 중요한 글자: 24px 이상 */
+  }
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    font-family: var(--font);
+    font-size: var(--text);
+    line-height: 1.5;
+    color: var(--ink);
+    background: var(--bg);
+    -webkit-text-size-adjust: 100%;
+  }
+  main {
+    min-height: 100%;
+    display: grid;
+    place-items: center;
+    padding: var(--gap);
+  }
+  .screen {
+    width: min(100%, 980px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--gap);
+    text-align: center;
+  }
+  .screen[hidden] { display: none; }
+  h1, h2 { margin: 0; line-height: 1.2; font-size: var(--big); letter-spacing: -0.02em; }
+  .lead { margin: 0; color: var(--muted); }
+  .card {
+    width: 100%;
+    background: var(--surface);
+    border: 2px solid var(--line);
+    border-radius: var(--radius);
+    padding: var(--gap);
+  }
+  button {
+    font: inherit;
+    font-weight: 700;
+    min-width: 56px;
+    min-height: 56px;
+    padding: 12px 32px;
+    border: 0;
+    border-radius: 999px;
+    cursor: pointer;
+    color: var(--brand-ink);
+    background: var(--brand);
+    transition: transform 0.12s ease;
+  }
+  button:active { transform: scale(0.97); }
+  button.secondary { color: var(--ink); background: var(--surface); border: 2px solid var(--line); }
+  :focus-visible { outline: 4px solid var(--ink); outline-offset: 4px; }
+  .msg { min-height: 1.5em; margin: 0; font-weight: 700; }
+  .msg.good { color: var(--good); }
+  .msg.bad { color: var(--bad); }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+</style>
+</head>
+<body>
+<main>
+  <!-- 1. 시작 화면: 무엇을 하는지 한 줄 + 시작 버튼 하나 -->
+  <section class="screen" id="start" aria-labelledby="start-title">
+    <h1 id="start-title" tabindex="-1">도구 이름</h1>
+    <p class="lead">무엇을 하는지 한 줄로 알려 줘요.</p>
+    <button type="button" id="start-btn">시작하기</button>
+  </section>
+
+  <!-- 2. 놀이 화면 -->
+  <section class="screen" id="play" aria-labelledby="play-title" hidden>
+    <h2 id="play-title" tabindex="-1">문제</h2>
+    <div class="card">여기에 놀이 내용을 넣어요.</div>
+    <p class="msg" id="msg" role="status" aria-live="polite"></p>
+    <button type="button" id="finish-btn">끝내기</button>
+  </section>
+
+  <!-- 3. 결과 화면 + 다시 하기 -->
+  <section class="screen" id="result" aria-labelledby="result-title" hidden>
+    <h2 id="result-title" tabindex="-1">잘했어요!</h2>
+    <p class="lead" id="result-text"></p>
+    <button type="button" id="again-btn">다시 하기</button>
+  </section>
+</main>
+<script>
+  // 화면 바꾸기: 보여 줄 화면의 제목으로 키보드 초점을 옮겨요.
+  function show(id) {
+    for (const s of document.querySelectorAll('.screen')) s.hidden = s.id !== id;
+    const title = document.querySelector('#' + id + ' [tabindex="-1"]');
+    if (title) title.focus();
+  }
+
+  const state = { score: 0 };
+
+  document.getElementById('start-btn').addEventListener('click', () => {
+    state.score = 0;
+    document.getElementById('msg').textContent = '';
+    show('play');
+  });
+
+  document.getElementById('finish-btn').addEventListener('click', () => {
+    document.getElementById('result-text').textContent = '점수: ' + state.score + '점';
+    show('result');
+  });
+
+  document.getElementById('again-btn').addEventListener('click', () => show('start'));
+</script>
+</body>
+</html>

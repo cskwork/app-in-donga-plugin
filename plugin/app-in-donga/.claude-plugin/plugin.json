@@ -1,0 +1,8 @@
+{
+  "name": "app-in-donga",
+  "displayName": "앱 인 동아",
+  "version": "0.1.0",
+  "description": "선생님이 Claude와 대화로 수업 게임·수업 도구·학급 운영 도구를 HTML 파일 하나로 만들고, 앱 인 동아에 올리기 전에 규칙에 맞는지 검사해요.",
+  "author": { "name": "동아출판" },
+  "keywords": ["수업 도구", "교실 게임", "학급 운영", "앱 인 동아"]
+}

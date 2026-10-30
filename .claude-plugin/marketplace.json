@@ -1,0 +1,12 @@
+{
+  "name": "donga",
+  "description": "동아출판이 선생님께 드리는 Claude 플러그인",
+  "owner": { "name": "동아출판" },
+  "plugins": [
+    {
+      "name": "app-in-donga",
+      "source": "./plugin/app-in-donga",
+      "description": "수업 게임·수업 도구를 HTML 파일 하나로 만들고, 앱 인 동아에 올리기 전에 검사해요."
+    }
+  ]
+}
